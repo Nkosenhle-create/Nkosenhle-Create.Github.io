@@ -1,0 +1,88 @@
+﻿@page "/projects/{Slug}"
+@inject PortfolioService Data
+@inject IJSRuntime JS
+
+<PageTitle>@(_project?.Title ?? "Project")</PageTitle>
+
+<section class="container details">
+    <a class="back-link" href="?section=projects">← Back to projects</a>
+
+    @if (_loading)
+    {
+        <p class="loading-state">Loading…</p>
+    }
+    else if (_project is null)
+    {
+        <h1>Project not found</h1>
+        <p class="lead">There's no project at this address.</p>
+    }
+    else
+    {
+        @if (_project.Year > 0)
+        {
+            <p class="eyebrow">@_project.Year</p>
+        }
+        <h1>@_project.Title</h1>
+        <p class="lead">@_project.Summary</p>
+
+        <div class="tags" style="margin-top:1.25rem">
+            @foreach (var t in _project.Tech)
+            {
+                <span class="tag">@t</span>
+            }
+        </div>
+
+        <div class="hero-actions">
+            @if (!string.IsNullOrWhiteSpace(_project.LiveUrl))
+            {
+                <a class="btn" href="@_project.LiveUrl" target="_blank" rel="noopener">View live</a>
+            }
+            @if (!string.IsNullOrWhiteSpace(_project.GitHubUrl))
+            {
+                <a class="btn btn-ghost" href="@_project.GitHubUrl" target="_blank" rel="noopener">Source code</a>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_project.ImageUrl))
+        {
+            <div class="details-hero"><img src="@_project.ImageUrl" alt="@_project.Title" /></div>
+        }
+
+        <div class="details-content">
+            @foreach (var para in _project.Description.Split("\n\n", StringSplitOptions.RemoveEmptyEntries))
+            {
+                <p>@para</p>
+            }
+
+            @if (_project.Highlights.Count > 0)
+            {
+                <h2>Highlights</h2>
+                <ul class="highlights">
+                    @foreach (var h in _project.Highlights)
+                    {
+                        <li>@h</li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter] public string Slug { get; set; } = "";
+
+    private Project? _project;
+    private bool _loading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loading = true;
+        _project = await Data.GetProjectAsync(Slug);
+        _loading = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await JS.InvokeVoidAsync("scrollToTop");
+    }
+}

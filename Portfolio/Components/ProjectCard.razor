@@ -1,0 +1,53 @@
+﻿<article class="card project-card">
+    <a href="projects/@Project.Slug" class="project-thumb" aria-label="@Project.Title details">
+        @if (!string.IsNullOrWhiteSpace(Project.ImageUrl))
+        {
+            <img src="@Project.ImageUrl" alt="@Project.Title" loading="lazy" />
+        }
+        else
+        {
+            <span class="letter">@Letter</span>
+        }
+        @if (Project.Featured)
+        {
+            <span class="badge">Featured</span>
+        }
+    </a>
+
+    <div class="project-body">
+        <div class="project-meta">
+            <h3><a href="projects/@Project.Slug">@Project.Title</a></h3>
+            @if (Project.Year > 0)
+            {
+                <span>@Project.Year</span>
+            }
+        </div>
+        <p>@Project.Summary</p>
+        <div class="tags">
+            @foreach (var t in Project.Tech)
+            {
+                <span class="tag">@t</span>
+            }
+        </div>
+    </div>
+
+    <div class="project-actions">
+        <a href="projects/@Project.Slug">Details →</a>
+        @if (!string.IsNullOrWhiteSpace(Project.GitHubUrl))
+        {
+            <a href="@Project.GitHubUrl" target="_blank" rel="noopener">Code</a>
+        }
+        @if (!string.IsNullOrWhiteSpace(Project.LiveUrl))
+        {
+            <a href="@Project.LiveUrl" target="_blank" rel="noopener">Live</a>
+        }
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired] public Project Project { get; set; } = default!;
+
+    private string Letter => string.IsNullOrEmpty(Project.Title)
+        ? "?"
+        : Project.Title[..1].ToUpperInvariant();
+}

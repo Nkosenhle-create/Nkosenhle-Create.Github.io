@@ -1,7 +1,135 @@
 ﻿@page "/"
+@inject PortfolioService Data
+@inject IJSRuntime JS
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@(_profile?.Name ?? "Portfolio")</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (_profile is null || _projects is null)
+{
+    <div class="container loading-state">Loading…</div>
+}
+else
+{
+    <section class="hero container">
+        <div class="hero-text reveal">
+            @if (!string.IsNullOrWhiteSpace(_profile.Location))
+            {
+                <p class="eyebrow">@_profile.Location</p>
+            }
+            <h1>Hi, I'm <span class="gradient-text">@_profile.Name</span></h1>
+            <p class="hero-title">@_profile.Title</p>
+            <p class="lead">@_profile.Tagline</p>
+            <div class="hero-actions">
+                <a class="btn" href="?section=projects">View my work</a>
+                @if (!string.IsNullOrWhiteSpace(_profile.CvUrl))
+                {
+                    <a class="btn btn-ghost" href="@_profile.CvUrl" target="_blank" rel="noopener">Download CV</a>
+                }
+            </div>
+        </div>
+        <div class="hero-avatar">
+            @if (!string.IsNullOrWhiteSpace(_profile.AvatarUrl))
+            {
+                <img src="@_profile.AvatarUrl" alt="@_profile.Name" />
+            }
+            else
+            {
+                <span>@_profile.Initials</span>
+            }
+        </div>
+    </section>
 
-Welcome to your new app.
+    <section id="about" class="section container">
+        <h2 class="section-title"><span>01.</span> About me</h2>
+        <p class="about-text">@_profile.About</p>
+    </section>
+
+    <section id="skills" class="section container">
+        <h2 class="section-title"><span>02.</span> Skills</h2>
+        <div class="skills-grid">
+            @foreach (var group in _profile.Skills)
+            {
+                <div class="card skill-card">
+                    <h3>@group.Category</h3>
+                    <div class="tags">
+                        @foreach (var s in group.Items)
+                        {
+                            <span class="tag">@s</span>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section id="projects" class="section container">
+        <h2 class="section-title"><span>03.</span> Projects</h2>
+        <div class="filters">
+            <button class="chip @(_filter is null ? "active" : "")" @onclick="() => _filter = null">All</button>
+            @foreach (var t in _allTech)
+            {
+                <button class="chip @(_filter == t ? "active" : "")" @onclick="() => _filter = t">@t</button>
+            }
+        </div>
+        <div class="projects-grid">
+            @foreach (var p in Filtered)
+            {
+                <ProjectCard @key="p.Slug" Project="p" />
+            }
+        </div>
+    </section>
+
+    <section id="contact" class="section container">
+        <h2 class="section-title"><span>04.</span> Get in touch</h2>
+        <div class="card contact-card">
+            <p>I'm open to new opportunities, freelance work, and collaborations. Drop me a message and I'll get back to you.</p>
+            @if (!string.IsNullOrWhiteSpace(_profile.Email))
+            {
+                <a class="btn" href="mailto:@_profile.Email">Say hello</a>
+            }
+            <div class="socials">
+                @if (!string.IsNullOrWhiteSpace(_profile.GitHub))
+                {
+                    <a href="@_profile.GitHub" target="_blank" rel="noopener">GitHub</a>
+                }
+                @if (!string.IsNullOrWhiteSpace(_profile.LinkedIn))
+                {
+                    <a href="@_profile.LinkedIn" target="_blank" rel="noopener">LinkedIn</a>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    [SupplyParameterFromQuery] public string? Section { get; set; }
+
+    private Profile? _profile;
+    private List<Project>? _projects;
+    private List<string> _allTech = new();
+    private string? _filter;
+    private bool _pendingScroll;
+
+    private IEnumerable<Project> Filtered =>
+        _filter is null ? _projects! : _projects!.Where(p => p.Tech.Contains(_filter));
+
+    protected override async Task OnInitializedAsync()
+    {
+        _profile = await Data.GetProfileAsync();
+        _projects = await Data.GetProjectsAsync();
+        _allTech = _projects.SelectMany(p => p.Tech).Distinct().OrderBy(t => t).ToList();
+    }
+
+    protected override void OnParametersSet() => _pendingScroll = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_pendingScroll || _projects is null) return;
+        _pendingScroll = false;
+
+        if (string.IsNullOrEmpty(Section) || Section == "top")
+            await JS.InvokeVoidAsync("scrollToTop");
+        else
+            await JS.InvokeVoidAsync("scrollToId", Section);
+    }
+}

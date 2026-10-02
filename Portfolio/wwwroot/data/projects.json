@@ -1,0 +1,51 @@
+[
+  {
+    "slug": "inventory-api",
+    "title": "Inventory Management API",
+    "summary": "A RESTful API for tracking stock across multiple warehouses with real-time alerts.",
+    "description": "Built for a small retail business that was tracking stock in spreadsheets. The API handles products, warehouses, stock movements and low-stock alerts.\n\nIt uses a clean architecture approach with separate domain, application and infrastructure layers, and is fully covered by integration tests.",
+    "tech": [ "C#", "ASP.NET Core", "EF Core", "SQL Server", "Docker" ],
+    "highlights": [
+      "JWT authentication with role-based authorization",
+      "Real-time low-stock notifications via SignalR",
+      "90%+ test coverage with xUnit and Testcontainers"
+    ],
+    "githubUrl": "https://github.com/yourusername/inventory-api",
+    "liveUrl": "",
+    "imageUrl": "",
+    "year": 2026,
+    "featured": true
+  },
+  {
+    "slug": "task-tracker-blazor",
+    "title": "Team Task Tracker",
+    "summary": "A Kanban-style task board built with Blazor, with drag-and-drop and live updates.",
+    "description": "A lightweight alternative to heavy project management tools for small teams.\n\nUsers can create boards, drag tasks between columns, and see teammates' changes instantly.",
+    "tech": [ "Blazor", "C#", "SignalR", "PostgreSQL" ],
+    "highlights": [
+      "Drag-and-drop columns with optimistic UI updates",
+      "Live collaboration through SignalR hubs"
+    ],
+    "githubUrl": "https://github.com/yourusername/task-tracker",
+    "liveUrl": "",
+    "imageUrl": "",
+    "year": 2025,
+    "featured": false
+  },
+  {
+    "slug": "payment-worker",
+    "title": "Payment Reconciliation Worker",
+    "summary": "A background service that reconciles bank statements against invoices every night.",
+    "description": "A .NET Worker Service that imports CSV bank statements, matches transactions to open invoices, and emails a summary report.\n\nIt cut a manual two-hour daily task down to a five-minute review.",
+    "tech": [ "C#", ".NET Worker Service", "Azure", "SQL Server" ],
+    "highlights": [
+      "Fuzzy matching on references and amounts",
+      "Deployed as an Azure Container App on a schedule"
+    ],
+    "githubUrl": "",
+    "liveUrl": "",
+    "imageUrl": "",
+    "year": 2025,
+    "featured": false
+  }
+]

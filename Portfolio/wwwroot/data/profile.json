@@ -1,0 +1,41 @@
+{
+  "name": "Loyiso Nkosenhle Sibaca",
+  "title": "Data Engineer & .NET Software Developer",
+  "tagline": "I build scalable data pipelines and clean, reliable web apps.",
+  "about": "I'm a developer with three focused tracks that I keep separate.\n\nAs a Data Engineer, I build reliable ETL/ELT pipelines, data warehouses, and reporting models.\nStack: SQL Server, T-SQL, Python (Pandas), Power BI.\n\nAs a .NET Developer, I build clean, scalable web apps and APIs.\nStack: C#, ASP.NET Core Web API, Entity Framework Core, Blazor.\n\nAs a Python Web Developer, I build lightweight, fast web apps and APIs.\nStack: Python, FastAPI, Flask, Django REST Framework, PostgreSQL, SQL Server.\n\nI'm currently finishing my Diploma in ICT at DUT and I'm part of DotNet Ninjas. Recent work includes Indlela (The Way), a unified learning hub for Geekulcha (2026), and a Clinic Management System for Clayton Garden Home.\n\nI'm available for freelance and full-time roles in Data Engineering, .NET, or Python development.",
+  "location": "Your City, Country",
+  "email": "you@example.com",
+  "github": "https://github.com/yourusername",
+  "linkedin": "https://www.linkedin.com/in/yourprofile",
+  "avatarUrl": "",
+  "cvUrl": "",
+  "skills": [
+    {
+      "category": "Backend",
+      "items": [
+        "C# & ASP.NET Core",
+        "Python & FastAPI",
+        "Web API Design & REST",
+        "Entity Framework Core",
+        "Authentication (JWT, Identity)",
+        "SQL Server"
+      ]
+    },
+    {
+      "category": "Frontend",
+      "items": [ "Blazor", "Razor Pages", "HTML", "CSS" ]
+    },
+    {
+      "category": "Data Engineering",
+      "items": [
+        "SQL Server & T-SQL",
+        "ETL / ELT Pipelines",
+        "SSIS & Data Warehousing",
+        "Python for Data (Pandas)",
+        "Power BI & Data Visualization",
+        "Data Modeling & Data Cleaning",
+        "Azure Data Factory (Learning)"
+      ]
+    }
+  ]
+}
